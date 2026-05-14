@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/navigation_home">
+
+    <fragment
+        android:id="@+id/navigation_home"
+        android:name="com.computerroom.monitoring.ui.home.HomeFragment"
+        android:label="@string/title_home" />
+
+    <fragment
+        android:id="@+id/navigation_sensor"
+        android:name="com.computerroom.monitoring.ui.sensor.SensorFragment"
+        android:label="@string/title_sensor" />
+
+    <fragment
+        android:id="@+id/navigation_control"
+        android:name="com.computerroom.monitoring.ui.control.ControlFragment"
+        android:label="@string/title_control" />
+
+    <fragment
+        android:id="@+id/navigation_history"
+        android:name="com.computerroom.monitoring.ui.history.HistoryFragment"
+        android:label="@string/title_history" />
+
+</navigation>

@@ -1,0 +1,105 @@
+package com.computerroom.monitoring.data.repository
+
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
+import com.computerroom.monitoring.data.model.DeviceStatus
+import com.computerroom.monitoring.data.model.HistoryRecord
+import com.computerroom.monitoring.data.model.SensorData
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ValueEventListener
+
+class FirebaseRepository {
+
+    private val database = FirebaseDatabase.getInstance()
+    private val sensorRef = database.getReference("sensor")
+    private val deviceRef = database.getReference("devices")
+    private val historyRef = database.getReference("history")
+
+    private val _sensorData = MutableLiveData<SensorData>()
+    val sensorData: LiveData<SensorData> = _sensorData
+
+    private val _deviceStatus = MutableLiveData<DeviceStatus>()
+    val deviceStatus: LiveData<DeviceStatus> = _deviceStatus
+
+    private val _historyList = MutableLiveData<List<HistoryRecord>>()
+    val historyList: LiveData<List<HistoryRecord>> = _historyList
+
+    private val _error = MutableLiveData<String>()
+    val error: LiveData<String> = _error
+
+    fun startListeningSensorData() {
+        sensorRef.addValueEventListener(object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                val data = snapshot.getValue(SensorData::class.java)
+                if (data != null) {
+                    _sensorData.postValue(data)
+                }
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+                _error.postValue("Sensor error: ${error.message}")
+            }
+        })
+    }
+
+    fun startListeningDeviceStatus() {
+        deviceRef.addValueEventListener(object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                val status = snapshot.getValue(DeviceStatus::class.java)
+                if (status != null) {
+                    _deviceStatus.postValue(status)
+                }
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+                _error.postValue("Device error: ${error.message}")
+            }
+        })
+    }
+
+    fun loadHistory() {
+        historyRef.orderByChild("timestamp").limitToLast(50)
+            .addValueEventListener(object : ValueEventListener {
+                override fun onDataChange(snapshot: DataSnapshot) {
+                    val records = mutableListOf<HistoryRecord>()
+                    for (child in snapshot.children) {
+                        val record = child.getValue(HistoryRecord::class.java)
+                        if (record != null) {
+                            records.add(record)
+                        }
+                    }
+                    records.sortByDescending { it.timestamp }
+                    _historyList.postValue(records)
+                }
+
+                override fun onCancelled(error: DatabaseError) {
+                    _error.postValue("History error: ${error.message}")
+                }
+            })
+    }
+
+    fun setDeviceFan(on: Boolean) {
+        deviceRef.child("fan").setValue(on)
+    }
+
+    fun setDeviceLight(on: Boolean) {
+        deviceRef.child("light").setValue(on)
+    }
+
+    fun setDeviceBuzzer(on: Boolean) {
+        deviceRef.child("buzzer").setValue(on)
+    }
+
+    companion object {
+        @Volatile
+        private var INSTANCE: FirebaseRepository? = null
+
+        fun getInstance(): FirebaseRepository {
+            return INSTANCE ?: synchronized(this) {
+                INSTANCE ?: FirebaseRepository().also { INSTANCE = it }
+            }
+        }
+    }
+}
