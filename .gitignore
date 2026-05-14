@@ -1,0 +1,27 @@
+# Android
+*.iml
+.gradle
+/local.properties
+/.idea
+.DS_Store
+/build
+/captures
+.externalNativeBuild
+.cxx
+local.properties
+app/build/
+app/release/
+
+# Firebase config (contains API keys)
+app/google-services.json
+
+# Gradle
+.gradle/
+build/
+gradle-app.setting
+
+# IDE
+*.swp
+*.swo
+*~
+.vscode/
