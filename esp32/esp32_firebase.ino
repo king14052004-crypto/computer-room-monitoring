@@ -152,10 +152,22 @@ void setup() {
   delay(2000);
   lcd.clear();
 
-  // ===== Khởi tạo trạng thái thiết bị trên Firebase =====
-  Firebase.setBool(firebaseData, "/devices/fan", false);
-  Firebase.setBool(firebaseData, "/devices/light", false);
-  Firebase.setBool(firebaseData, "/devices/buzzer", false);
+  // ===== Đọc trạng thái thiết bị từ Firebase (giữ nguyên nếu đã có) =====
+  if (Firebase.getBool(firebaseData, "/devices/fan")) {
+    digitalWrite(RELAY_FAN, firebaseData.boolData() ? HIGH : LOW);
+  } else {
+    Firebase.setBool(firebaseData, "/devices/fan", false);
+  }
+  if (Firebase.getBool(firebaseData, "/devices/light")) {
+    digitalWrite(RELAY_LIGHT, firebaseData.boolData() ? HIGH : LOW);
+  } else {
+    Firebase.setBool(firebaseData, "/devices/light", false);
+  }
+  if (Firebase.getBool(firebaseData, "/devices/buzzer")) {
+    digitalWrite(BUZZER_PIN, firebaseData.boolData() ? HIGH : LOW);
+  } else {
+    Firebase.setBool(firebaseData, "/devices/buzzer", false);
+  }
 }
 
 void loop() {
@@ -224,12 +236,12 @@ void loop() {
   if (currentTime - lastHistoryTime >= HISTORY_INTERVAL) {
     lastHistoryTime = currentTime;
 
-    String historyPath = "/history/" + String(millis());
+    time_t nowHist;
+    time(&nowHist);
+    String historyPath = "/history/" + String((unsigned long)nowHist);
     Firebase.setFloat(firebaseData, historyPath + "/temperature", temperature);
     Firebase.setFloat(firebaseData, historyPath + "/humidity", humidity);
     Firebase.setBool(firebaseData, historyPath + "/motion", motion == HIGH);
-    time_t nowHist;
-    time(&nowHist);
     Firebase.setInt(firebaseData, historyPath + "/timestamp", (int)nowHist);
 
     Serial.println("Da luu lich su");
