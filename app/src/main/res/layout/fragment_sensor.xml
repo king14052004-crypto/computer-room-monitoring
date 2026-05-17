@@ -87,6 +87,14 @@
                     android:progressTint="@color/warning_orange"
                     android:progressBackgroundTint="@color/background_light" />
 
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:text="Ngưỡng: 10°C - 40°C"
+                    android:textSize="12sp"
+                    android:textColor="@color/text_secondary" />
+
             </LinearLayout>
 
         </com.google.android.material.card.MaterialCardView>
@@ -167,73 +175,13 @@
                     android:progressTint="@color/info_blue"
                     android:progressBackgroundTint="@color/background_light" />
 
-            </LinearLayout>
-
-        </com.google.android.material.card.MaterialCardView>
-
-        <!-- Motion Detail -->
-        <com.google.android.material.card.MaterialCardView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="12dp"
-            app:cardCornerRadius="12dp"
-            app:cardElevation="4dp">
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:padding="20dp">
-
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Cảm biến chuyển động (PIR)"
-                    android:textSize="16sp"
-                    android:textStyle="bold"
-                    android:textColor="@color/text_primary" />
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:gravity="center_vertical"
-                    android:layout_marginTop="16dp">
-
-                    <ImageView
-                        android:id="@+id/ivMotionIcon"
-                        android:layout_width="56dp"
-                        android:layout_height="56dp"
-                        android:src="@drawable/ic_motion"
-                        android:contentDescription="Motion" />
-
-                    <LinearLayout
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:orientation="vertical"
-                        android:layout_marginStart="16dp">
-
-                        <TextView
-                            android:id="@+id/tvMotionValue"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="--"
-                            android:textSize="28sp"
-                            android:textStyle="bold"
-                            android:textColor="@color/text_primary" />
-
-                        <TextView
-                            android:id="@+id/tvMotionDetail"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Đang chờ dữ liệu..."
-                            android:textSize="14sp"
-                            android:textColor="@color/text_secondary" />
-
-                    </LinearLayout>
-
-                </LinearLayout>
+                    android:layout_marginTop="8dp"
+                    android:text="Ngưỡng: 30% - 80%"
+                    android:textSize="12sp"
+                    android:textColor="@color/text_secondary" />
 
             </LinearLayout>
 

@@ -34,17 +34,15 @@ class HistoryAdapter : ListAdapter<HistoryRecord, HistoryAdapter.ViewHolder>(Dif
             binding.tvHistoryTemp.text = String.format("%.1f°C", record.temperature)
             binding.tvHistoryHumid.text = String.format("%.0f%%", record.humidity)
 
-            if (record.motion) {
-                binding.tvHistoryMotion.text = "Chuyển động"
-                binding.tvHistoryMotion.setTextColor(
-                    ContextCompat.getColor(binding.root.context, R.color.warning_red)
+            val isWarning = record.temperature > 40 || record.temperature < 10 ||
+                record.humidity > 80 || record.humidity < 30
+            binding.tvHistoryStatus.text = if (isWarning) "Cảnh báo" else "Bình thường"
+            binding.tvHistoryStatus.setTextColor(
+                ContextCompat.getColor(
+                    binding.root.context,
+                    if (isWarning) R.color.warning_red else R.color.safe_green
                 )
-            } else {
-                binding.tvHistoryMotion.text = "An toàn"
-                binding.tvHistoryMotion.setTextColor(
-                    ContextCompat.getColor(binding.root.context, R.color.safe_green)
-                )
-            }
+            )
 
             if (record.timestamp > 0) {
                 val sdf = SimpleDateFormat("HH:mm:ss\ndd/MM/yyyy", Locale.getDefault())

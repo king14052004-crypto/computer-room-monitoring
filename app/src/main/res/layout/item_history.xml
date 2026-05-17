@@ -82,7 +82,7 @@
 
         </LinearLayout>
 
-        <!-- Motion -->
+        <!-- Status -->
         <LinearLayout
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -98,7 +98,7 @@
                 android:textColor="@color/text_secondary" />
 
             <TextView
-                android:id="@+id/tvHistoryMotion"
+                android:id="@+id/tvHistoryStatus"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="--"

@@ -35,7 +35,6 @@ class SensorFragment : Fragment() {
 
     private fun setupObservers() {
         viewModel.sensorData.observe(viewLifecycleOwner) { data ->
-            // Temperature
             binding.tvTempValue.text = String.format("%.1f", data.temperature)
             binding.tvTempUnit.text = "°C"
             binding.progressTemp.progress = data.temperature.toInt().coerceIn(0, 60)
@@ -61,7 +60,6 @@ class SensorFragment : Fragment() {
                 }
             }
 
-            // Humidity
             binding.tvHumidValue.text = String.format("%.0f", data.humidity)
             binding.tvHumidUnit.text = "%"
             binding.progressHumid.progress = data.humidity.toInt().coerceIn(0, 100)
@@ -87,22 +85,6 @@ class SensorFragment : Fragment() {
                 }
             }
 
-            // Motion
-            if (data.motion) {
-                binding.tvMotionValue.text = "CÓ"
-                binding.tvMotionDetail.text = "Phát hiện chuyển động trong phòng!"
-                binding.ivMotionIcon.setColorFilter(
-                    ContextCompat.getColor(requireContext(), R.color.warning_red)
-                )
-            } else {
-                binding.tvMotionValue.text = "KHÔNG"
-                binding.tvMotionDetail.text = "Không phát hiện chuyển động"
-                binding.ivMotionIcon.setColorFilter(
-                    ContextCompat.getColor(requireContext(), R.color.safe_green)
-                )
-            }
-
-            // Last update
             if (data.timestamp > 0) {
                 val sdf = SimpleDateFormat("HH:mm:ss dd/MM/yyyy", Locale.getDefault())
                 binding.tvLastUpdate.text = "Cập nhật lần cuối: ${sdf.format(Date(data.timestamp * 1000L))}"
